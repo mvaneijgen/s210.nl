@@ -7,29 +7,14 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
 
-    uglify: {
-      global: {
-        files: {
-          "js/site.min.js": ["js/site.js"]
-        }
-      }
-    },
-
     sass: {
       global: {
         options: {
-          style: "compressed"
+          style: "expanded"
         },
         files: {
-          "css/global-unprefixed.css": "scss/global.scss"
+          "css/main.css": "_sass/main.scss"
         }
-      }
-    },
-
-    autoprefixer: {
-      global: {
-        src: "css/global-unprefixed.css",
-        dest: "css/global.css"
       }
     },
 
@@ -55,34 +40,10 @@ module.exports = function(grunt) {
         tasks: ["uglify", "shell:jekyllBuild"]
       },
       css: {
-        files: ["scss/*.scss"],
-        tasks: ["sass", "autoprefixer", "shell:jekyllBuild"]
-      },
-      svgIcons: {
-        files: ["svg/*.svg"],
-        tasks: ["svgstore", "shell:jekyllBuild"]
+        files: ["_sass/*.scss"],
+        tasks: ["sass", "shell:jekyllBuild"]
       }
 
-    },
-    svgstore: {
-      options: {
-        formatting : {
-          indent_size : 2
-        },
-        prefix : "shape-",
-        cleanup: true,
-        svg: {
-           viewBox: '0 0 32 32',
-        version: '1.1',
-        xmlns: 'http://www.w3.org/2000/svg',
-        'xmlns:xlink': 'http://www.w3.org/1999/xlink'
-        }
-      },
-      default: {
-        files: {
-          "images/svg-defs.svg": ["svg/*.svg"]
-        }
-      }
     }
 
   });
@@ -90,6 +51,6 @@ module.exports = function(grunt) {
   require("load-grunt-tasks")(grunt);
 
   grunt.registerTask("serve", ["shell:jekyllServe"]);
-  grunt.registerTask("default", ["sass", "autoprefixer", "svgstore", "shell:jekyllBuild", "watch"]);
+  grunt.registerTask("default", ["sass", "shell:jekyllBuild", "watch"]);
 
 };
